@@ -87,7 +87,7 @@ main() {
 
   if $backuptool_ab; then
     # Swap the slot for addon.d-v2
-    if [ -n "$SLOT" ]; then
+    if [ ! -z "$SLOT" ]; then
       case $SLOT in
         _a) SLOT=_b;;
         _b) SLOT=_a;;
