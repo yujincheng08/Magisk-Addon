@@ -7,7 +7,7 @@
 #
 ########################################################
 
-DYNAMIC_PARTITIONS=`getprop ro.boot.dynamic_partitions`
+DYNAMIC_PARTITIONS=$(getprop ro.boot.dynamic_partitions)
 if [ "$DYNAMIC_PARTITIONS" = "true" ]; then
     BLK_PATH="/dev/block/mapper"
 else
@@ -15,12 +15,12 @@ else
 fi
 
 get_block_for_mount_point() {
-  grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s [:blank:] ' ' | cut -d' ' -f1
+  grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s "[:blank:]" ' ' | cut -d' ' -f1
 }
 
 find_block() {
   local name="$1"
-  local fstab_entry=$(get_block_for_mount_point "/$name")
+  local fstab_entry="$(get_block_for_mount_point "/$name")"
 
   local dev
     if [ -z "$fstab_entry" ]; then
@@ -34,8 +34,7 @@ find_block() {
 DATA_BLOCK=$(find_block "userdata")
 mount_data() {
     mkdir -p "/data" || true
-    if mount -o rw "$DATA_BLOCK" "/data"; then
-    ui_print "/data mounted"
+    mount -o rw "$DATA_BLOCK" "/data" && ui_print "/data mounted"
 }
 MAGISKBIN=/data/adb/magisk
 [ -f $MAGISKBIN/util_functions.sh ] || mount_data
@@ -60,7 +59,6 @@ initialize() {
     # Override ui_print when booted
     ui_print() { log -t Magisk -- "$1"; }
   fi
-  OUTFD=
   setup_flashable
 }
 
@@ -71,12 +69,12 @@ main() {
   fi
 
   # Ensure we aren't in /tmp/addon.d anymore (since it's been deleted by addon.d)
-  mkdir -p $TMPDIR
-  cd $TMPDIR
+  mkdir -p "$TMPDIR"
+  cd "$TMPDIR" || return 1
 
   $BOOTMODE || recovery_actions
 
-  if echo $MAGISK_VER | grep -q '\.'; then
+  if echo "$MAGISK_VER" | grep -q '\.'; then
     PRETTY_VER=$MAGISK_VER
   else
     PRETTY_VER="$MAGISK_VER($MAGISK_VER_CODE)"
@@ -89,7 +87,7 @@ main() {
 
   if $backuptool_ab; then
     # Swap the slot for addon.d-v2
-    if [ ! -z $SLOT ]; then
+    if [ -n "$SLOT" ]; then
       case $SLOT in
         _a) SLOT=_b;;
         _b) SLOT=_a;;
@@ -99,7 +97,7 @@ main() {
 
   find_boot_image
 
-  [ -z $BOOTIMAGE ] && abort "! Unable to detect target image"
+  [ -z "$BOOTIMAGE" ] && abort "! Unable to detect target image"
   ui_print "- Target image: $BOOTIMAGE"
 
   remove_system_su
@@ -110,7 +108,7 @@ main() {
   # Cleanups
   cd /
   $BOOTMODE || recovery_cleanup
-  rm -rf $TMPDIR
+  rm -rf "$TMPDIR"
 
   ui_print "- Done"
   exit 0
