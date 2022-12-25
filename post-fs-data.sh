@@ -17,5 +17,5 @@ if [ -d /system/addon.d ]; then
   ADDOND=/system/addon.d/99-magisk.sh
   cp -af "$MODDIR"/addon.d.sh $ADDOND
   chmod 755 $ADDOND
-  [ -n "$REMOUNTED" ] && mount -o remount,ro $REMOUNTED
+  [ -n "$REMOUNTED" ] && mount -o remount,ro $REMOUNTED || true
 fi
