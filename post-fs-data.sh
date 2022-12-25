@@ -2,10 +2,10 @@
 
 MODDIR=${0%/*}
 # addon.d
-SLOT=$(resetprop -n ro.boot.slot_suffix)
+. "$MODDIR"/util_functions.sh
 if [ -d /system/addon.d ]; then
   log -t Magisk "- Adding addon.d survival script"
-  blockdev --setrw "/dev/block/mapper/system$SLOT" 2>/dev/null
+  set_systemblk_rw
   REMOUNTED=""
   if mount | grep ' /system ' | grep -q 'ro'; then
     mount -o remount,rw /system

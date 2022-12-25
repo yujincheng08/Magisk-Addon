@@ -5,7 +5,7 @@
 #################
 
 umask 022
-. /tmp/magisk/addon.d/util_functions.sh
+. /tmp/magisk/addon.d/uninstall.sh
 # echo before loading util_functions
 ui_print() { echo "$1"; }
 
