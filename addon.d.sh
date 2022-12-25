@@ -31,7 +31,7 @@ find_block() {
     echo "$dev"
   fi
 }
-DATA_BLOCK=$(find_block "data")
+DATA_BLOCK=$(find_block "userdata")
 mount_data() {
     if mount -o rw "$DATA_BLOCK" "/data"; then
     ui_print "/data mounted"
