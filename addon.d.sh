@@ -33,6 +33,7 @@ find_block() {
 }
 DATA_BLOCK=$(find_block "userdata")
 mount_data() {
+    mkdir -p "/data" || true
     if mount -o rw "$DATA_BLOCK" "/data"; then
     ui_print "/data mounted"
 }
