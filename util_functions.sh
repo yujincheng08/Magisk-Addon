@@ -5,5 +5,6 @@ else
     BLK_PATH="/dev/block/bootdevice/by-name"
 fi
 set_systemblk_rw() {
+    mount -o rw,remount /system || mount -o rw,remount /
     blockdev --setrw "$BLK_PATH/system$SLOT" 2>/dev/null
 }
