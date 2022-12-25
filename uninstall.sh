@@ -1,5 +1,4 @@
 #!/sbin/sh
-MODDIR=${0%/*}
 SLOT=$(resetprop -n ro.boot.slot_suffix)
 ADDOND=/system/addon.d
 if [ -f $ADDOND ]; then

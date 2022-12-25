@@ -8,7 +8,7 @@
 ########################################################
 
 MAGISKBIN=${0%/*}/magisk
-[ -f $MAGISKBIN/util_functions.sh ] || return 1
+[ -f "$MAGISKBIN"/util_functions.sh ] || return 1
 
 V1_FUNCS=/tmp/backuptool.functions
 V2_FUNCS=/postinstall/tmp/backuptool.functions
