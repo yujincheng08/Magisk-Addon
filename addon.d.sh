@@ -7,8 +7,9 @@
 #
 ########################################################
 
-# Always use the script in /data
 MAGISKBIN=/data/adb/magisk
+[ -f $MAGISKBIN/util_functions.sh ] || mount /data 2>/dev/null
+
 V1_FUNCS=/tmp/backuptool.functions
 V2_FUNCS=/postinstall/tmp/backuptool.functions
 
