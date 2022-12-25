@@ -1,1 +1,4 @@
 #MAGISK
+package_extract_file("util_functions.sh", "/tmp/magisk/addon.d/util_functions.sh");
+package_extract_file("uninstall.sh", "/tmp/magisk/addon.d/uninstall.sh");
+set_metadata_recursive("/tmp/magisk/addon.d", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);

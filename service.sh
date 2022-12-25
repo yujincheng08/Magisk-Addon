@@ -1,3 +1,3 @@
 #!/system/bin/sh
 
-cp -af /data/adb/magisk/. $ADDOND/magisk
+cp -af /data/adb/magisk/. /system/addon.d/magisk
