@@ -34,7 +34,7 @@ find_block() {
 DATA_BLOCK=$(find_block "userdata")
 mount_data() {
     mkdir -p "/data" || true
-    mount -o rw "$DATA_BLOCK" "/data" && ui_print "/data mounted"
+    mount -o ro "$DATA_BLOCK" "/data" && ui_print "/data mounted"
 }
 MAGISKBIN=/data/adb/magisk
 [ -f $MAGISKBIN/util_functions.sh ] || mount_data
