@@ -25,6 +25,7 @@ fi
 initialize() {
   # Load utility functions
   . $MAGISKBIN/util_functions.sh
+  export ASH_STANDALONE=1
 
   if $BOOTMODE; then
     # Override ui_print when booted
