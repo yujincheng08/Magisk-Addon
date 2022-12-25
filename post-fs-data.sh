@@ -5,7 +5,7 @@ MODDIR=${0%/*}
 . "$MODDIR"/util_functions.sh
 if [ -d /system/addon.d ]; then
   log -t Magisk "- Adding addon.d survival script"
-  remount_system_rw
+  set_systemblk_rw
   REMOUNTED=""
   if mount | grep ' /system ' | grep -q 'ro'; then
     mount -o remount,rw /system
