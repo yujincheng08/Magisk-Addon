@@ -7,8 +7,37 @@
 #
 ########################################################
 
+DYNAMIC_PARTITIONS=`getprop ro.boot.dynamic_partitions`
+if [ "$DYNAMIC_PARTITIONS" = "true" ]; then
+    BLK_PATH="/dev/block/mapper"
+else
+    BLK_PATH="/dev/block/bootdevice/by-name"
+fi
+
+get_block_for_mount_point() {
+  grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s [:blank:] ' ' | cut -d' ' -f1
+}
+
+find_block() {
+  local name="$1"
+  local fstab_entry=$(get_block_for_mount_point "/$name")
+
+  local dev
+    if [ -z "$fstab_entry" ]; then
+      dev="${BLK_PATH}/${name}"
+    fi
+
+  if [ -b "$dev" ]; then
+    echo "$dev"
+  fi
+}
+DATA_BLOCK=$(find_block "data")
+mount_data() {
+    if mount -o rw "$DATA_BLOCK" "/data"; then
+    ui_print "/data mounted"
+}
 MAGISKBIN=/data/adb/magisk
-[ -f $MAGISKBIN/util_functions.sh ] || mount /data 2>/dev/null
+[ -f $MAGISKBIN/util_functions.sh ] || mount_data
 
 V1_FUNCS=/tmp/backuptool.functions
 V2_FUNCS=/postinstall/tmp/backuptool.functions
