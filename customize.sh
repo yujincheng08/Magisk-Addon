@@ -3,6 +3,7 @@ cd "$MODPATH" || abort
 chmod +x "$MODPATH"/post-fs-data.sh
 set_systemblk_rw
 ADDOND=/system/addon.d
+. "$MODPATH"/uninstall.sh
 mkdir -p "$ADDOND"/magisk
 cp -af "$MODPATH"/addon.d.sh $ADDOND/99-magisk.sh
 cp -af /data/adb/magisk/. "$ADDOND"/magisk

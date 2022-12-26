@@ -7,7 +7,7 @@
 #
 ########################################################
 
-MAGISKBIN=${0%/*}/magisk
+export MAGISKBIN="${0%/*}"/magisk
 [ -f "$MAGISKBIN"/util_functions.sh ] || return 1
 
 V1_FUNCS=/tmp/backuptool.functions
@@ -24,8 +24,10 @@ fi
 
 initialize() {
   # Load utility functions
-  . $MAGISKBIN/util_functions.sh
+  . "$MAGISKBIN"/util_functions.sh
   export ASH_STANDALONE=1
+  export NVBASE=/system/addon.d/magisk
+  export MAGISKBIN="$MAGISKBIN"
 
   if $BOOTMODE; then
     # Override ui_print when booted
@@ -54,15 +56,15 @@ main() {
   print_title "Magisk $PRETTY_VER addon.d"
 
   mount_partitions
-  check_data
+  resolve_vars
   get_flags
 
   if $backuptool_ab; then
     # Swap the slot for addon.d-v2
     if [ ! -z "$SLOT" ]; then
       case $SLOT in
-        _a) SLOT=_b;;
-        _b) SLOT=_a;;
+      _a) SLOT=_b ;;
+      _b) SLOT=_a ;;
       esac
     fi
   fi
@@ -87,34 +89,34 @@ main() {
 }
 
 case "$1" in
-  backup)
-    # Stub
+backup)
+  # Stub
   ;;
-  restore)
-    # Stub
+restore)
+  # Stub
   ;;
-  pre-backup)
-    # Stub
+pre-backup)
+  # Stub
   ;;
-  post-backup)
-    # Stub
+post-backup)
+  # Stub
   ;;
-  pre-restore)
-    # Stub
+pre-restore)
+  # Stub
   ;;
-  post-restore)
-    initialize
-    if $backuptool_ab; then
-      su=sh
-      $BOOTMODE && su=su
-      exec $su -c "sh $0 addond-v2"
-    else
-      # Run in background, hack for addon.d-v1
-      (main) &
-    fi
+post-restore)
+  initialize
+  if $backuptool_ab; then
+    su=sh
+    $BOOTMODE && su=su
+    exec $su -c "sh $0 addond-v2"
+  else
+    # Run in background, hack for addon.d-v1
+    (main) &
+  fi
   ;;
-  addond-v2)
-    initialize
-    main
+addond-v2)
+  initialize
+  main
   ;;
 esac
