@@ -14,5 +14,4 @@ set_systemblk_rw() {
     mount -o remount,rw /
     export REMOUNTED="/"
   fi
-
 }
