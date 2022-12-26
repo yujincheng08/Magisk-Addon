@@ -7,4 +7,5 @@ ADDOND=/system/addon.d
 mkdir -p "$ADDOND"/magisk
 cp -af "$MODPATH"/addon.d.sh $ADDOND/99-magisk.sh
 cp -af /data/adb/magisk/. "$ADDOND"/magisk
-exec "$MODPATH"/post-fs-data.sh
+export MODDIR=$MODPATH
+. "$MODPATH"/post-fs-data.sh

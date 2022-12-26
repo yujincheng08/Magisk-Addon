@@ -1,6 +1,5 @@
 #!/system/bin/sh
-
-MODDIR=${0%/*}
+[ -z $MODDIR ] && MODDIR=${0%/*}
 # addon.d
 . "$MODDIR"/util_functions.sh
 if [ -d /system/addon.d ]; then
