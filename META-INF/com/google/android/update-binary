@@ -5,9 +5,16 @@
 #################
 
 umask 022
-. /tmp/magisk/addon.d/uninstall.sh
 # echo before loading util_functions
 ui_print() { echo "$1"; }
+export BBBIN=/system/addon.d/magisk/busybox
+export ASH_STANDALONE=1
+if echo "$3" | $BBBIN grep -q "uninstall"; then
+  ui_print "- Uninstalling"
+  . /tmp/magisk/addon.d/uninstall.sh
+  ui_print "- Done"
+  exit 0
+fi
 
 require_new_magisk() {
   ui_print "*******************************"
