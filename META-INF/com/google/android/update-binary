@@ -7,7 +7,7 @@
 umask 022
 # echo before loading util_functions
 ui_print() { echo "$1"; }
-export BBBIN=/system/addon.d/magisk/busybox
+BBBIN=/system/addon.d/magisk/busybox
 export ASH_STANDALONE=1
 if echo "$3" | $BBBIN grep -q "uninstall"; then
   ui_print "- Uninstalling"
