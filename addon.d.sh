@@ -32,6 +32,7 @@ initialize() {
     # Override ui_print when booted
     ui_print() { log -t Magisk -- "$1"; }
   fi
+  unset OUTFD
   setup_flashable
 }
 
