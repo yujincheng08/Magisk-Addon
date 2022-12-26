@@ -7,7 +7,7 @@
 #
 ########################################################
 
-export MAGISKBIN="${0%/*}"/magisk
+MAGISKBIN="${0%/*}"/magisk
 [ -f "$MAGISKBIN"/util_functions.sh ] || return 1
 
 V1_FUNCS=/tmp/backuptool.functions
@@ -33,15 +33,13 @@ if [ "$1" = post-restore ]; then
     # update_engine_sideload --payload=file://<ZIPFILE> --offset=<OFFSET> --headers=<HEADERS> --status_fd=<OUTFD>
     [ -z $OUTFD ] && OUTFD=$(ps | grep -v 'grep' | grep -oE 'status_fd=[0-9]+' | cut -d= -f2)
     [ -z $OUTFD ] && OUTFD=$(ps -Af | grep -v 'grep' | grep -oE 'status_fd=[0-9]+' | cut -d= -f2)
-    export OUTFD=$OUTFD
   fi
 fi
 initialize() {
   # Load utility functions
   . "$MAGISKBIN"/util_functions.sh
-  export ASH_STANDALONE=1
-  export NVBASE=/system/addon.d
-  export MAGISKBIN="$MAGISKBIN"
+  NVBASE=/system/addon.d
+  resolve_vars
 
   if $BOOTMODE; then
     # Override ui_print when booted
