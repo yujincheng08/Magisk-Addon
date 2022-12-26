@@ -21,12 +21,26 @@ elif [ -f $V2_FUNCS ]; then
 else
   return 1
 fi
+if [ "$1" = post-restore ]; then
+  BOOTMODE=false
+  ps | grep zygote | grep -v grep >/dev/null && BOOTMODE=true
+  $BOOTMODE || ps -A 2>/dev/null | grep zygote | grep -v grep >/dev/null && BOOTMODE=true
 
+  if ! $BOOTMODE; then
+    # update-binary|updater <RECOVERY_API_VERSION> <OUTFD> <ZIPFILE>
+    OUTFD=$(ps | grep -v 'grep' | grep -oE 'update(.*) 3 [0-9]+' | cut -d" " -f3)
+    [ -z $OUTFD ] && OUTFD=$(ps -Af | grep -v 'grep' | grep -oE 'update(.*) 3 [0-9]+' | cut -d" " -f3)
+    # update_engine_sideload --payload=file://<ZIPFILE> --offset=<OFFSET> --headers=<HEADERS> --status_fd=<OUTFD>
+    [ -z $OUTFD ] && OUTFD=$(ps | grep -v 'grep' | grep -oE 'status_fd=[0-9]+' | cut -d= -f2)
+    [ -z $OUTFD ] && OUTFD=$(ps -Af | grep -v 'grep' | grep -oE 'status_fd=[0-9]+' | cut -d= -f2)
+    export OUTFD=$OUTFD
+  fi
+fi
 initialize() {
   # Load utility functions
   . "$MAGISKBIN"/util_functions.sh
   export ASH_STANDALONE=1
-  export NVBASE=/system/addon.d/magisk
+  export NVBASE=/system/addon.d
   export MAGISKBIN="$MAGISKBIN"
 
   if $BOOTMODE; then
