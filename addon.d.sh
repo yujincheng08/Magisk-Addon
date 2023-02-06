@@ -7,9 +7,9 @@
 #
 ########################################################
 
-NVBASE_ADDON="${0%/*}"
-MAGISKBIN="$NVBASE_ADDON"/magisk
-[ -f "$MAGISKBIN"/util_functions.sh ] || return 1
+SYSTEM_MAGISKBIN=$S/addon.d/magisk
+MAGISKTMP=/tmp/magisk
+[ -f "$SYSTEM_MAGISKBIN"/util_functions.sh ] || return 1
 
 V1_FUNCS=/tmp/backuptool.functions
 V2_FUNCS=/postinstall/tmp/backuptool.functions
@@ -25,8 +25,8 @@ fi
 
 initialize() {
   # Load utility functions
-  . "$MAGISKBIN"/util_functions.sh
-  NVBASE=$NVBASE_ADDON
+  . $MAGISKTMP/util_functions.sh
+  readonly NVBASE=/tmp
   resolve_vars
 
   if $BOOTMODE; then
@@ -90,10 +90,10 @@ main() {
 
 case "$1" in
 backup)
-  # Stub
+  cp -af "$SYSTEM_MAGISKBIN" $MAGISKTMP
   ;;
 restore)
-  # Stub
+  cp -af $MAGISKTMP "$SYSTEM_MAGISKBIN"
   ;;
 pre-backup)
   # Stub

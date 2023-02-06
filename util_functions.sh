@@ -8,10 +8,10 @@ set_systemblk_rw() {
   blockdev --setrw "$BLK_PATH/system$SLOT" 2>/dev/null
   local REMOUNTED=""
   if mount | grep ' /system ' | grep -q 'ro'; then
-    mount -o remount,rw /system
     export REMOUNTED="/system"
+    mount -o remount,rw /system
   elif mount | grep ' / ' | grep -q 'ro'; then
-    mount -o remount,rw /
     export REMOUNTED="/"
+    mount -o remount,rw /
   fi
 }

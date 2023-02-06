@@ -5,7 +5,6 @@ set_systemblk_rw
 ADDOND=/system/addon.d
 . "$MODPATH"/uninstall.sh
 mkdir -p "$ADDOND"/magisk
-cp -af "$MODPATH"/addon.d.sh $ADDOND/99-magisk.sh
 cp -af /data/adb/magisk/. "$ADDOND"/magisk
 export MODDIR=$MODPATH
 . "$MODPATH"/post-fs-data.sh
