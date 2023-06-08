@@ -2,7 +2,7 @@
 
 MODDIR=${0%/*}
 # addon.d
-$SLOT=$(resetprop -n ro.boot.slot_suffix)
+SLOT=$(resetprop -n ro.boot.slot_suffix)
 if [ -d /system/addon.d ]; then
   log -t Magisk "- Adding addon.d survival script"
   blockdev --setrw /dev/block/mapper/system$SLOT 2>/dev/null || true
